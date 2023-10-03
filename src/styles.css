@@ -1,9 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
-* {
-  box-sizing: border-box;
-}
-
 body {
   font-family: "Inter", sans-serif;
   margin: 10px;
@@ -79,12 +75,13 @@ button {
   display: flex;
 }
 
-#search-todo {
+#add-todo {
   border-radius: 10px;
   border: 0.5px solid #222429;
   height: 100%;
   width: 70%;
   padding-left: 10px;
+  color: #ffffff;
   background-color: #16171b;
   font-size: 1.1em;
 }
@@ -136,26 +133,33 @@ button {
   justify-content: space-between;
 }
 
+.todo-list-item-button {
+  padding: 0;
+  background: none;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
 .todo-list-item-icons {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  opacity: 0;
 }
 
 .svg-check,
 .svg-delete {
-  width: 2em;
+  box-sizing: border-box;
+  width: 2.5em;
   height: 100%;
   border-radius: 10px;
   border: 2px solid #16171b;
-  opacity: 0;
   background-color: #16171b;
 }
 
-.todo-list-item:hover .svg-check,
-.todo-list-item.hover .svg-check,
-.todo-list-item:hover .svg-delete,
-.todo-list-item.hover .svg-delete {
+.todo-list-item:hover .todo-list-item-icons,
+.todo-list-item.hover .todo-list-item-icons {
   opacity: 1;
 }
