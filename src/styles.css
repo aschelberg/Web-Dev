@@ -1,0 +1,161 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  margin: 10px;
+  background-color: #222429;
+  line-height: 1.5;
+}
+
+input,
+button {
+  font-family: inherit;
+}
+
+.main-content {
+  color: #ffffff;
+  width: 100%;
+  max-width: 600px;
+  height: 100vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-content,
+.body-content {
+  background-color: #16171b;
+  border-radius: 15px;
+  padding: 0.875em;
+}
+
+/* body content */
+.body-content {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 20px;
+}
+
+/* Nav bar styling */
+.nav-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-list-item a {
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffffff;
+  padding: 0.5em 1.5em;
+}
+
+/* for fun - also checking link hover area */
+.nav-list-item a:hover {
+  background-color: white;
+  color: black;
+  border-radius: 15px;
+}
+
+/* Section title */
+.title {
+  font-size: 26px;
+  padding: 0;
+  margin: 0;
+}
+
+/* Search and new task button */
+.todo-commands {
+  height: 3em;
+  display: flex;
+}
+
+#search-todo {
+  border-radius: 10px;
+  border: 0.5px solid #222429;
+  height: 100%;
+  width: 70%;
+  padding-left: 10px;
+  background-color: #16171b;
+  font-size: 1.1em;
+}
+
+.btn.new-task {
+  width: 30%;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #222429;
+  border: none;
+  border-radius: 10px;
+  margin-left: 15px;
+  padding: 10px 0px;
+  cursor: pointer;
+  font-size: 1.1em;
+}
+
+.btn.new-task:hover {
+  background-color: #ffffff;
+  color: black;
+}
+
+/* separation line */
+.dividing-line {
+  border-bottom: 1px solid #222429;
+  margin: 1em 0;
+  padding: 0;
+}
+
+/* todo items */
+.todo-list {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  gap: 10px;
+}
+
+.todo-list-item {
+  padding: 0.875em 1em;
+  background-color: #222429;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.125em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.todo-list-item-icons {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.svg-check,
+.svg-delete {
+  width: 2em;
+  height: 100%;
+  border-radius: 10px;
+  border: 2px solid #16171b;
+  opacity: 0;
+  background-color: #16171b;
+}
+
+.todo-list-item:hover .svg-check,
+.todo-list-item.hover .svg-check,
+.todo-list-item:hover .svg-delete,
+.todo-list-item.hover .svg-delete {
+  opacity: 1;
+}
