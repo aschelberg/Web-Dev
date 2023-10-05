@@ -17,21 +17,29 @@
       <!-- Add the todo search and add new button -->
       <section class="body-content">
         <h1 class="title">Things to do:</h1>
-        <form class="todo-commands">
-          <input
-            id="add-todo"
-            type="text"
-            placeholder="Enter Todo"
-            name="text"
-          />
-          <button class="btn new-task">New Task</button>
-        </form>
+        <div class="todo-commands">
+          <form class="todo-commands-content-add">
+            <input
+              id="add-todo"
+              type="text"
+              placeholder="Enter Todo"
+              name="text"
+            />
+            <button class="btn new-task">New Task</button>
+          </form>
+          <!-- <div class="error-message">**Error, Please enter a new task</div> -->
+          <form class="todo-commands-content-filter">
+            <input id="search-todo" type="text" placeholder="Search..." name="text">
+            <label class="hide-completed-label">
+              <input class="hide-completed" type="checkbox" input/>Hide Completed
+            </label>  
+          </form> 
+         </div> 
         <!-- Add the todo list items (hard coded)for styling to match example -->
         <div class="dividing-line"></div>
         <ul class="todo-list"></ul>
       </section>
     </div>
-
     <div id="app"></div>
     <script src="./index.mjs" type="module"></script>
   </body>

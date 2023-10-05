@@ -35,7 +35,7 @@ const deleteIcon = `
 const todos = [
   {
     text: "Grocery Shop",
-    completed: false,
+    completed: true,
   },
   {
     text: "Get Oil Changed",
@@ -51,6 +51,8 @@ const todos = [
   },
 ];
 
+const deletedTodos = [];
+
 const filters = {
   searchText: "",
   hideCompleted: false,
@@ -64,11 +66,19 @@ const generateButton = function (icon) {
   return button;
 };
 
-const generateButtons = function () {
+const generateButtons = function (index) {
   const buttonWrapper = document.createElement("div");
   buttonWrapper.classList.add("todo-list-item-icons");
   const completeButton = generateButton(completeIcon);
   const deleteButton = generateButton(deleteIcon);
+
+  completeButton.addEventListener("click", function () {
+    completeTodo(index);
+  });
+  deleteButton.addEventListener("click", function () {
+    deleteTodo(index);
+    console.log(deletedTodos);
+  });
 
   buttonWrapper.appendChild(completeButton);
   buttonWrapper.appendChild(deleteButton);
@@ -76,10 +86,32 @@ const generateButtons = function () {
   return buttonWrapper;
 };
 
+const completeTodo = function (index) {
+  const todo = todos.find((todo, i) => index === i);
+  todo.completed = true;
+
+  console.log(todos);
+};
+
+const deleteTodo = function (index) {
+  const removedTodo = todos.splice(index, 1);
+  deletedTodos.push(removedTodo);
+  renderTodos(todos, filters);
+};
+
 const renderTodos = function (todos, filters) {
+  const filteredTodos = todos.filter(function (todo) {
+    const searchTextMatch = todo.text
+      .toLowerCase()
+      .includes(filters.searchText.toLowerCase());
+    const hideCompletedMatch = !filters.hideCompleted || !todo.completed;
+
+    return searchTextMatch && hideCompletedMatch;
+  });
+
   document.querySelector(".todo-list").innerHTML = "";
 
-  todos.forEach(function (todo, index) {
+  filteredTodos.forEach(function (todo, index) {
     const todoEl = document.createElement("li");
     todoEl.classList.add("todo-list-item");
     todoEl.textContent = todo.text;
@@ -91,14 +123,29 @@ const renderTodos = function (todos, filters) {
 
 renderTodos(todos, filters);
 
+document.querySelector("#search-todo").addEventListener("input", function (e) {
+  filters.searchText = e.target.value;
+  renderTodos(todos, filters);
+  console.log(e.target.value);
+});
+
 document
-  .querySelector(".todo-commands")
+  .querySelector(".todo-commands-content-add")
   .addEventListener("submit", function (e) {
     e.preventDefault();
     todos.push({
       text: e.target.elements.text.value,
       completed: false,
     });
+
     renderTodos(todos, filters);
     e.target.elements.text.value = "";
+  });
+
+document
+  .querySelector(".hide-completed")
+  .addEventListener("change", function (e) {
+    filters.hideCompleted = e.target.checked;
+
+    renderTodos(todos, filters);
   });
