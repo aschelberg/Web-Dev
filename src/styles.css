@@ -124,6 +124,10 @@ button {
   background-color: #ffffff;
   color: black;
 }
+.hide-completed-label-active {
+  background-color: #ffffff;
+  color: black;
+}
 
 .hide-completed {
   display: none;

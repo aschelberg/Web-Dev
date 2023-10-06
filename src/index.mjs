@@ -1,151 +1,45 @@
 import "./styles.css";
 
-const completeIcon = `
-  <svg
-  class="svg-check"
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 20 20"
-  fill="currentColor"
-  >
-  <path
-  fill-rule="evenodd"
-  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-  />
-  </svg>
-`;
+let todos = getSavedTodos();
 
-const deleteIcon = `
-  <svg
-  class="svg-delete"
-  xmlns="http://www.w3.org/2000/svg"
-  fill="none"
-  viewBox="0 0 24 24"
-  stroke-width="1.5"
-  stroke="currentColor"
-  class="w-6 h-6"
-  >
-  <path
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-  />
-  </svg>
-`;
-
-const todos = [
-  {
-    text: "Grocery Shop",
-    completed: true,
-  },
-  {
-    text: "Get Oil Changed",
-    completed: false,
-  },
-  {
-    text: "Vet Appointment",
-    completed: false,
-  },
-  {
-    text: "Birthday Present",
-    completed: false,
-  },
-];
-
-const deletedTodos = [];
+let deletedTodos = getDeletedTodos();
 
 const filters = {
   searchText: "",
   hideCompleted: false,
 };
 
-const generateButton = function (icon) {
-  const button = document.createElement("button");
-  button.classList.add("todo-list-item-button");
-  button.innerHTML = icon;
-
-  return button;
-};
-
-const generateButtons = function (index) {
-  const buttonWrapper = document.createElement("div");
-  buttonWrapper.classList.add("todo-list-item-icons");
-  const completeButton = generateButton(completeIcon);
-  const deleteButton = generateButton(deleteIcon);
-
-  completeButton.addEventListener("click", function () {
-    completeTodo(index);
-  });
-  deleteButton.addEventListener("click", function () {
-    deleteTodo(index);
-    console.log(deletedTodos);
-  });
-
-  buttonWrapper.appendChild(completeButton);
-  buttonWrapper.appendChild(deleteButton);
-
-  return buttonWrapper;
-};
-
-const completeTodo = function (index) {
-  const todo = todos.find((todo, i) => index === i);
-  todo.completed = true;
-
-  console.log(todos);
-};
-
-const deleteTodo = function (index) {
-  const removedTodo = todos.splice(index, 1);
-  deletedTodos.push(removedTodo);
-  renderTodos(todos, filters);
-};
-
-const renderTodos = function (todos, filters) {
-  const filteredTodos = todos.filter(function (todo) {
-    const searchTextMatch = todo.text
-      .toLowerCase()
-      .includes(filters.searchText.toLowerCase());
-    const hideCompletedMatch = !filters.hideCompleted || !todo.completed;
-
-    return searchTextMatch && hideCompletedMatch;
-  });
-
-  document.querySelector(".todo-list").innerHTML = "";
-
-  filteredTodos.forEach(function (todo, index) {
-    const todoEl = document.createElement("li");
-    todoEl.classList.add("todo-list-item");
-    todoEl.textContent = todo.text;
-    const buttons = generateButtons(index);
-    todoEl.appendChild(buttons);
-    document.querySelector(".todo-list").appendChild(todoEl);
-  });
-};
-
 renderTodos(todos, filters);
 
-document.querySelector("#search-todo").addEventListener("input", function (e) {
+searchTodo.addEventListener("input", function (e) {
   filters.searchText = e.target.value;
   renderTodos(todos, filters);
   console.log(e.target.value);
 });
 
-document
-  .querySelector(".todo-commands-content-add")
-  .addEventListener("submit", function (e) {
-    e.preventDefault();
-    todos.push({
-      text: e.target.elements.text.value,
-      completed: false,
-    });
-
-    renderTodos(todos, filters);
-    e.target.elements.text.value = "";
+addNewTodo.addEventListener("submit", function (e) {
+  e.preventDefault();
+  if (!e.target.elements.text.value) {
+    return;
+  }
+  todos.push({
+    text: e.target.elements.text.value,
+    completed: false,
   });
 
-document
-  .querySelector(".hide-completed")
-  .addEventListener("change", function (e) {
-    filters.hideCompleted = e.target.checked;
+  saveTodos(todos);
+  renderTodos(todos, filters);
+  e.target.elements.text.value = "";
+});
 
-    renderTodos(todos, filters);
-  });
+hideCompleted.addEventListener("change", function (e) {
+  filters.hideCompleted = e.target.checked;
+
+  renderTodos(todos, filters);
+
+  if (e.target.checked) {
+    hideCompleted.classList.add("hide-completed-label-active");
+  } else if (!e.target.checked) {
+    hideCompleted.classList.remove("hide-completed-label-active");
+  }
+});
