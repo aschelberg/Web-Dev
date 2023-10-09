@@ -2,6 +2,8 @@ import "./styles.css";
 
 const todos = getSavedTodos();
 
+const deletedTodos = getDeletedTodos();
+
 const filters = {
   searchText: "",
   hideCompleted: false,
@@ -122,7 +124,10 @@ hideCompleted.addEventListener("change", function (e) {
   }
 });
 
-showAllTodos.addEventListener("click", () => renderTodos(todos, filters));
+showAllTodos.addEventListener("click", () => 
+
+  renderTodos(todos, filters)
+  );
 
 showDeletedTodos.addEventListener("click", () =>
   renderTodos(deletedTodos, filters),
