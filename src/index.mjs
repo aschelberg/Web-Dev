@@ -1,8 +1,6 @@
 import "./styles.css";
 
-let todos = getSavedTodos();
-
-let deletedTodos = getDeletedTodos();
+const todos = getSavedTodos();
 
 const filters = {
   searchText: "",
@@ -17,10 +15,15 @@ const completeTodo = function (index) {
 };
 
 // update deletedTodos array in local storage, Needs to remove from todos
+// update the object structure to include a "deleted" property and renderTodos including this when true
+// get rid of the deletedTodos array when adding this property. It will not be needed
 const deleteTodo = function (index) {
-  const removeTodo = todos.splice(index, 1);
-  deletedTodos.push(removeTodo);
+  let removeTodo = todos.splice(index, 1);
+  deletedTodos.push(removeTodo[0]);
+
   saveDeletedTodos(deletedTodos);
+
+  saveTodos(todos);
   renderTodos(todos, filters);
 };
 
@@ -54,6 +57,16 @@ const generateButtons = function (index) {
   return buttonWrapper;
 };
 
+// Generate DOM structure for todo list item
+const generateTodoDOM = function (todo, index) {
+  const todoEl = document.createElement("li");
+  todoEl.classList.add("todo-list-item");
+  todoEl.textContent = todo.text;
+  const buttons = generateButtons(index);
+  todoEl.appendChild(buttons);
+  return todoEl;
+};
+
 // Render todos based on filters
 const renderTodos = function (todos, filters) {
   const filteredTodos = todos.filter(function (todo) {
@@ -68,13 +81,9 @@ const renderTodos = function (todos, filters) {
   document.querySelector(".todo-list").innerHTML = "";
 
   filteredTodos.forEach(function (todo, index) {
-    const todoEl = document.createElement("li");
-    todoEl.classList.add("todo-list-item");
-    todoEl.textContent = todo.text;
-    const buttons = generateButtons(index);
-    todoEl.appendChild(buttons);
-
-    document.querySelector(".todo-list").appendChild(todoEl);
+    document
+      .querySelector(".todo-list")
+      .appendChild(generateTodoDOM(todo, index));
   });
 };
 
@@ -93,6 +102,7 @@ addNewTodo.addEventListener("submit", function (e) {
   todos.push({
     text: e.target.elements.text.value,
     completed: false,
+    isDeleted: false,
   });
 
   saveTodos(todos);
@@ -106,8 +116,21 @@ hideCompleted.addEventListener("change", function (e) {
   renderTodos(todos, filters);
 
   if (e.target.checked) {
-    hideCompleted.classList.add("hide-completed-label-active");
+    hideCompleted.classList.add("button-active");
   } else if (!e.target.checked) {
-    hideCompleted.classList.remove("hide-completed-label-active");
+    hideCompleted.classList.remove("button-active");
   }
+});
+
+showAllTodos.addEventListener("click", () => renderTodos(todos, filters));
+
+showDeletedTodos.addEventListener("click", () =>
+  renderTodos(deletedTodos, filters),
+);
+
+showCompletedTodos.addEventListener("click", function (e) {
+  const completedTodos = todos.filter(function (todo) {
+    return todo.completed;
+  });
+  renderTodos(completedTodos, filters);
 });

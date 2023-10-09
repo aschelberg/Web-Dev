@@ -68,12 +68,6 @@ button {
   margin: 0;
 }
 
-.error-message {
-  font-style: oblique;
-  font-size: 1em;
-  margin-left: 10px;
-}
-
 .todo-commands {
   display: flex;
   flex-direction: column;
@@ -124,7 +118,7 @@ button {
   background-color: #ffffff;
   color: black;
 }
-.hide-completed-label-active {
+.button-active {
   background-color: #ffffff;
   color: black;
 }
