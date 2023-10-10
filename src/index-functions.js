@@ -47,22 +47,7 @@ const getSavedTodos = function () {
   }
 };
 
-// Read existing todos from local storage
-const getDeletedTodos = function () {
-  const deletedTodosJSON = localStorage.getItem("deletedTodos");
-  if (deletedTodosJSON !== null) {
-    return JSON.parse(deletedTodosJSON);
-  } else {
-    return [];
-  }
-};
-
 // Save the todos to local storage
 const saveTodos = function (todos) {
   localStorage.setItem("todos", JSON.stringify(todos));
-};
-
-// Save deleted todos to local storage
-const saveDeletedTodos = function (deletedTodos) {
-  localStorage.setItem("deletedTodos", JSON.stringify(deletedTodos));
 };

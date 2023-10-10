@@ -47,7 +47,9 @@ button {
   justify-content: space-between;
 }
 
-.nav-list-item a {
+.tasks-nav-button a,
+.completed-nav-button a,
+.deleted-nav-button a {
   font-size: 18px;
   font-weight: bold;
   text-decoration: none;
@@ -55,10 +57,12 @@ button {
   padding: 0.5em 1.5em;
 }
 
-.nav-list-item a:hover {
+.tasks-nav-button a:hover,
+.completed-nav-button a:hover,
+.deleted-nav-button a:hover {
   background-color: white;
   color: black;
-  border-radius: 15px;
+  border-radius: 10px;
 }
 
 /* Filtering Section */
@@ -118,9 +122,12 @@ button {
   background-color: #ffffff;
   color: black;
 }
-.button-active {
+
+.button-active,
+.button-active a {
   background-color: #ffffff;
   color: black;
+  border-radius: 10px;
 }
 
 .hide-completed {

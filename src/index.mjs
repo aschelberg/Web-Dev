@@ -2,11 +2,15 @@ import "./styles.css";
 
 const todos = getSavedTodos();
 
-const deletedTodos = getDeletedTodos();
-
 const filters = {
   searchText: "",
   hideCompleted: false,
+};
+
+const removeNavButtonActive = function () {
+  showDeletedTodos.classList.remove("button-active");
+  showCompletedTodos.classList.remove("button-active");
+  showAllTodos.classList.remove("button-active");
 };
 
 // Update object value and save to local storage
@@ -14,16 +18,11 @@ const completeTodo = function (index) {
   const todo = todos.find((todo, i) => index === i);
   todo.completed = true;
   saveTodos(todos);
+  renderTodos(todos);
 };
 
-// update deletedTodos array in local storage, Needs to remove from todos
-// update the object structure to include a "deleted" property and renderTodos including this when true
-// get rid of the deletedTodos array when adding this property. It will not be needed
 const deleteTodo = function (index) {
-  let removeTodo = todos.splice(index, 1);
-  deletedTodos.push(removeTodo[0]);
-
-  saveDeletedTodos(deletedTodos);
+  todos[index].isDeleted = true;
 
   saveTodos(todos);
   renderTodos(todos, filters);
@@ -71,7 +70,21 @@ const generateTodoDOM = function (todo, index) {
 
 // Render todos based on filters
 const renderTodos = function (todos, filters) {
-  const filteredTodos = todos.filter(function (todo) {
+  const deletedNavStatus = showDeletedTodos.classList.contains("button-active");
+  let todosArray = todos;
+  if (deletedNavStatus === true) {
+    const deletedTodos = todos.filter(function (todo) {
+      return todo.isDeleted;
+    });
+    todosArray = deletedTodos;
+  } else {
+    const nonDeletedTodos = todos.filter(function (todo) {
+      return !todo.isDeleted;
+    });
+    todosArray = nonDeletedTodos;
+  }
+
+  const filteredTodos = todosArray.filter(function (todo) {
     const searchTextMatch = todo.text
       .toLowerCase()
       .includes(filters.searchText.toLowerCase());
@@ -124,18 +137,40 @@ hideCompleted.addEventListener("change", function (e) {
   }
 });
 
-showAllTodos.addEventListener("click", () => 
+window.addEventListener("DOMContentLoaded", () => {
+  const allTodos = todos.filter(function (todo) {
+    return !todo.isDeleted;
+  });
+  renderTodos(allTodos, filters);
+  showAllTodos.classList.add("button-active");
+});
 
-  renderTodos(todos, filters)
-  );
+showAllTodos.addEventListener("click", function (e) {
+  const allTodos = todos.filter(function (todo) {
+    return !todo.isDeleted;
+  });
 
-showDeletedTodos.addEventListener("click", () =>
-  renderTodos(deletedTodos, filters),
-);
+  removeNavButtonActive();
+  showAllTodos.classList.add("button-active");
+  renderTodos(allTodos, filters);
+});
+
+showDeletedTodos.addEventListener("click", function (e) {
+  const deletedTodos = todos.filter(function (todo) {
+    return todo.isDeleted;
+  });
+
+  removeNavButtonActive();
+  showDeletedTodos.classList.add("button-active");
+  renderTodos(deletedTodos, filters);
+});
 
 showCompletedTodos.addEventListener("click", function (e) {
   const completedTodos = todos.filter(function (todo) {
     return todo.completed;
   });
+
+  removeNavButtonActive();
+  showCompletedTodos.classList.add("button-active");
   renderTodos(completedTodos, filters);
 });
